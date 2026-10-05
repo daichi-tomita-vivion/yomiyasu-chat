@@ -35,10 +35,22 @@ ln -s ~/work/yomiyasu-chat/output-styles/yomiyasu-chat.md ~/.claude/output-style
 
 読みにくいと感じた応答があったら、どの文のどこが読みにくかったかを特定し、機械的に検証できるルールとして `output-styles/yomiyasu-chat.md` に1行足します。「簡潔に」のような曖昧な指示より、「文末のコロンを使わない」のような具体的な指示のほうが確実に守られます。1回の変更は1ルールに絞り、同じ質問で前後を比べます。
 
-応答の機械的な測定には、yomiyasuに同梱の `yomiyasu_lint.py` が会話の応答にもそのまま使えます。
+応答の機械的な測定には、yomiyasuに同梱の `yomiyasu_lint.py` を使います。yomiyasuプラグインのインストール有無やバージョンに依存しないよう、`scripts/vendor/` に同じファイルをMITライセンスのまま同梱しています（取り込み元のタグは `scripts/vendor/VERSION`）。標準ライブラリだけで動くので、Python 3があれば実行できます。
 
 ```bash
-python3 ~/.claude/plugins/cache/yomiyasu/yomiyasu/1.0.6/scripts/yomiyasu_lint.py response.md
+# 任意のMarkdownや標準入力を検査
+python3 scripts/vendor/yomiyasu_lint.py response.md
+pbpaste | python3 scripts/vendor/yomiyasu_lint.py
+
+# 直近のClaude Codeセッションの最終応答を検査（対象プロジェクトのディレクトリで実行）
+scripts/lint-last-response.py
+scripts/lint-last-response.py -n 3 --cwd ~/work/some-project
+```
+
+上流の yomiyasu_lint.py が更新されたら、タグを指定して取り直します。
+
+```bash
+scripts/update-vendor.sh v1.0.7
 ```
 
 ルールが増えて回帰が気になり始めたら、`evals/` にケースを置いて `claude plugin eval .` でスタイルあり・なしのスコア差を測ります。
