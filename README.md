@@ -54,6 +54,41 @@ scripts/lint-last-response.py -n 3 --cwd ~/work/some-project
 
 探索先は、環境変数 `YOMIYASU_LINT`、`~/.claude/plugins/installed_plugins.json` の記録、プラグインキャッシュの最新バージョン、`npx skills` の配置先の順です。
 
+### Stop hookで応答ごとに自動検査する
+
+`hooks/yomiyasu_stop_hook.py` をStop hookとして登録すると、応答が終わるたびに最終応答を `yomiyasu_lint` で検査し、スコアと指摘を警告として表示します。検査結果は `~/.claude/yomiyasu-chat/lint-log.jsonl` に追記されるので、後からスコアの推移や多い指摘の種類を集計できます。yomiyasuが未インストールのとき、応答が200字未満のとき、日本語を含まないときは何もしません。
+
+シンボリックリンク運用の場合は `~/.claude/settings.json` に次を追加します。プラグインとして入れた場合は `hooks/hooks.json` が自動で読み込まれるため、この設定は不要です。
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/work/yomiyasu-chat/hooks/yomiyasu_stop_hook.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+動作は環境変数で変えられます。
+
+| 変数 | 既定 | 意味 |
+|---|---|---|
+| `YOMIYASU_HOOK_MODE` | `warn` | `warn` は警告表示のみ。`block` はスコアが閾値未満のとき1回だけ書き直しを求める。`off` で無効 |
+| `YOMIYASU_HOOK_THRESHOLD` | `90` | `block` の閾値 |
+| `YOMIYASU_HOOK_MIN_LEN` | `200` | この文字数未満の応答は検査しない |
+| `YOMIYASU_HOOK_LOG` | `~/.claude/yomiyasu-chat/lint-log.jsonl` | 検査結果の追記先。空文字で無効 |
+
+`block` は同じプロンプトに対して1回しか発動しないので、書き直しが延々と続くことはありません。まずは `warn` で指摘の傾向を見て、スタイルファイルにルールを足すほうが、毎回の遅延とトークン消費を増やさずに済みます。
+
 ルールが増えて回帰が気になり始めたら、`evals/` にケースを置いて `claude plugin eval .` でスタイルあり・なしのスコア差を測ります。
 
 ## ライセンス
