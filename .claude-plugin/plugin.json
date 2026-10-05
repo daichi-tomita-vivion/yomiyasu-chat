@@ -1,0 +1,11 @@
+{
+  "name": "yomiyasu-chat",
+  "description": "Claude Codeの会話応答を、結論ファーストで読みやすい自然な日本語にするoutput style。yomiyasuの文体原則を常時適用する。",
+  "version": "0.1.0",
+  "author": {
+    "name": "daichi-tomita-vivion"
+  },
+  "homepage": "https://github.com/daichi-tomita-vivion/yomiyasu-chat",
+  "repository": "https://github.com/daichi-tomita-vivion/yomiyasu-chat",
+  "license": "MIT"
+}
