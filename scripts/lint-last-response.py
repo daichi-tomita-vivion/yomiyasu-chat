@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """直近のClaude Codeセッションの最終応答を取り出して yomiyasu_lint にかける。
 
+yomiyasu プラグインがインストールされていることが前提（scripts/yomiyasu_lint_path.py で解決）。
+
 使い方:
   scripts/lint-last-response.py            # カレントディレクトリに対応するプロジェクトの最新セッション
   scripts/lint-last-response.py -n 3       # 直近3応答をまとめて検査
@@ -15,7 +17,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-LINT = HERE / "vendor" / "yomiyasu_lint.py"
+sys.path.insert(0, str(HERE))
+from yomiyasu_lint_path import INSTALL_HINT, resolve  # noqa: E402
 
 
 def project_dir(cwd: Path) -> Path:
@@ -56,7 +59,10 @@ def main():
         sys.exit(f"{a.min_len}字以上の応答がありません: {logs[0].name}")
     body = "\n\n---\n\n".join(texts[-a.n:])
 
-    cmd = [sys.executable, str(LINT)]
+    lint = resolve()
+    if lint is None:
+        sys.exit(INSTALL_HINT)
+    cmd = [sys.executable, str(lint)]
     if a.json:
         cmd.append("--json")
     if a.strict:
