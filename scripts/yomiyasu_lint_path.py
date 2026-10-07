@@ -2,7 +2,7 @@
 """インストール済みの yomiyasu プラグインから yomiyasu_lint.py の場所を解決する。
 
 探索順:
-  1. 環境変数 YOMIYASU_LINT（ファイルパスを直接指定）
+  1. 環境変数 YOMIYASU_LINT（ファイルパスを直接指定。同じディレクトリに markdown_visibility.py が必要）
   2. ~/.claude/plugins/installed_plugins.json の yomiyasu の installPath
   3. ~/.claude/plugins/cache/yomiyasu/yomiyasu/<version>/ のうち最新バージョン
   4. npx skills / openskills での配置先（~/.claude/skills, ~/.agents/skills）
@@ -18,7 +18,7 @@ INSTALL_HINT = (
     "yomiyasu_lint.py が見つかりません。yomiyasu プラグインをインストールしてください。\n"
     "  /plugin marketplace add nanaism/yomiyasu\n"
     "  /plugin install yomiyasu@yomiyasu\n"
-    "別の場所にある場合は環境変数 YOMIYASU_LINT でパスを指定できます。"
+    "別の場所にある場合は環境変数 YOMIYASU_LINT でパスを指定できます（同じディレクトリに markdown_visibility.py が必要です）。"
 )
 
 

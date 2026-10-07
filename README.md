@@ -52,7 +52,7 @@ scripts/lint-last-response.py
 scripts/lint-last-response.py -n 3 --cwd ~/work/some-project
 ```
 
-探索先は、環境変数 `YOMIYASU_LINT`、`~/.claude/plugins/installed_plugins.json` の記録、プラグインキャッシュの最新バージョン、`npx skills` の配置先の順です。
+探索先は、環境変数 `YOMIYASU_LINT`、`~/.claude/plugins/installed_plugins.json` の記録、プラグインキャッシュの最新バージョン、`npx skills` の配置先の順です。yomiyasu 1.0.8 以降の `yomiyasu_lint.py` は同じディレクトリの `markdown_visibility.py` を読み込むため、`YOMIYASU_LINT` で指定する場合も2つを同じ場所に置きます。
 
 ### Stop hookで応答ごとに自動検査する
 

@@ -8,7 +8,8 @@
   YOMIYASU_HOOK_THRESHOLD  block の閾値（既定 90）
   YOMIYASU_HOOK_MIN_LEN    この文字数未満の応答は検査しない（既定 200）
   YOMIYASU_HOOK_LOG        検査結果を追記する JSONL（既定 ~/.claude/yomiyasu-chat/lint-log.jsonl、空文字で無効）
-  YOMIYASU_LINT            yomiyasu_lint.py のパスを直接指定（省略時はインストール済み yomiyasu から解決）
+  YOMIYASU_LINT            yomiyasu_lint.py のパスを直接指定（省略時はインストール済み yomiyasu から解決。
+                           同じディレクトリに markdown_visibility.py が必要）
 
 yomiyasu が未インストール、または検査中に失敗した場合は何もせず終了する（フェイルオープン）。
 """
